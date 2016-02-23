@@ -1,0 +1,3 @@
+[submodule "tokyocabinet"]
+	path = tokyocabinet
+	url = https://github.com/ehiggs/tokyocabinet
