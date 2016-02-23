@@ -1,0 +1,27 @@
+[package]
+name = "tokyocabinet-sys"
+description = "Wrappers for Tokyocabinet key value store."
+version = "0.1.0"
+authors = ["Ewan Higgs <ewan.higgs@ugent.be>"]
+license = "Apache-2.0"
+keywords = ["database", "embedded", "persistence", "keyvalue"]
+homepage = "https://github.com/ehiggs/tokyocabinet-sys"
+
+links = "tokyocabinet"
+build = "build.rs"
+
+exclude = [
+    ".gitignore",
+    ".travis.yml",
+    "deploy.sh",
+    "test/**/*",
+]
+
+[dependencies]
+libc = "0.1.8"
+bitflags = "0.4.0"
+libz-sys = "1.0.1"
+
+[build-dependencies]
+pkg-config = "0.3"
+vergen = "0.1"
