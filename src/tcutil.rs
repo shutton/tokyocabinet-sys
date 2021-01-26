@@ -1,8 +1,25 @@
 use libc::{c_char, c_int, c_void, size_t};
 /// TCXSTR - Extensible String
-#[derive(Copy, Clone)]
+#[derive(Debug)]
 #[repr(C)]
-pub struct TCXSTR(pub *const c_void);
+pub struct TCXSTR {
+    ptr: *const c_void,
+    size: c_int,
+    asize: c_int,
+}
+
+// TODO: This probably belongs in a separate tokyocabinet crate
+impl From<TCXSTR> for &[u8] {
+    fn from(tcxstr: TCXSTR) -> Self {
+        unsafe { std::slice::from_raw_parts(tcxstr.ptr as *const u8, tcxstr.size as usize) }
+    }
+}
+
+impl TCXSTR {
+    pub fn as_bytes(&self) -> &'static [u8] {
+        unsafe { std::slice::from_raw_parts(self.ptr as *const u8, self.size as usize) }
+    }
+}
 
 /// TCLISTDATUM - element of a list.
 #[derive(Copy, Clone)]
