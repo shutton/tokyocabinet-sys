@@ -16,7 +16,7 @@
 
 use libc::{c_char, c_int, c_long, c_void};
 
-use tcutil::TCCMP;
+use tcutil::{TCCMP, TCXSTR};
 
 /// TCBDB - The B+ tree database instance.
 #[derive(Copy, Clone)]
@@ -111,6 +111,12 @@ extern {
     pub fn tcbdbget(bdb: TCBDB, kbuf: *const u8, ksiz: c_int, sp: *mut *const c_int) -> *mut u8;
     pub fn tcbdbsync(bdb: TCBDB) -> bool;
     pub fn tcbdbvanish(bdb: TCBDB) -> bool;
+
+    // Cursor support
+    pub fn tcbdbcurnew(bdb: TCBDB) -> TCBDBCUR;
+    pub fn tcbdbcurfirst(cur: TCBDBCUR);
+    pub fn tcbdbcurrec(cur: TCBDBCUR, kxstr: &TCXSTR, vxstr: &TCXSTR) -> bool;
+    pub fn tcbdbcurnext(cur: TCBDBCUR) -> bool;
 }
 
 #[cfg(test)]
