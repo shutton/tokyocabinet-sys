@@ -7,7 +7,20 @@ use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use vergen::*;
 
+#[cfg(target_os = "macos")]
+const PKG_CONFIG_PATH: &str = "PKG_CONFIG_PATH";
+#[cfg(target_os = "macos")]
+const MACOS_TC_PC_PATH: &str = "/usr/local/Cellar/tokyo-cabinet/1.4.48/lib/pkgconfig";
+
 fn main() {
+    // This works on macOS if TC is installed via brew
+    // Since TC is not longer maintained, the version is unlikely to change
+    #[cfg(target_os = "macos")]
+    match env::var(PKG_CONFIG_PATH) {
+        Ok(v) => env::set_var(PKG_CONFIG_PATH, format!("{}:{}", v, MACOS_TC_PC_PATH)),
+        Err(_) => env::set_var(PKG_CONFIG_PATH, MACOS_TC_PC_PATH),
+    }
+
     let mut flags = OutputFns::all();
     flags.toggle(NOW);
     assert!(vergen(flags).is_ok());
